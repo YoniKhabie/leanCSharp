@@ -19,18 +19,20 @@ public static class GamesEndPoints
         new(10, "Dark Souls III", "RPG", 39.99m, new DateOnly(2016, 4, 12))
     ];
 
-    public static WebApplication MapGameEndpoints(this WebApplication app){
-        app.MapGet("/games", () => games);
-    
-        app.MapGet("/games/{id}", (int id) => {
+    public static RouteGroupBuilder MapGameEndpoints(this WebApplication app){
+        var group = app.MapGroup("/games").WithParameterValidation();
+
+        group.MapGet("", () => games);
+
+        group.MapGet("/{id}", (int id) => {
             GameDto? game = games.Find(game => game.Id == id);
             if(game is null){
                 return Results.NotFound();
             }
             return Results.Ok(game);
         });
-    
-        app.MapPost("/games", (CreateGameDto newGame) =>{
+
+        group.MapPost("", (CreateGameDto newGame) =>{
             GameDto game = new(
                 games.Count+1,
                 newGame.Name,
@@ -40,8 +42,8 @@ public static class GamesEndPoints
             games.Add(game);
             return Results.Ok(game);
         });
-    
-        app.MapPut("/games/{id}", (int id, UpdateGameDto updatedGame)=>{
+
+        group.MapPut("/{id}", (int id, UpdateGameDto updatedGame)=>{
             var index = games.FindIndex(game => game.Id ==id);
             if(index == -1){
                 return Results.NotFound();
@@ -55,12 +57,12 @@ public static class GamesEndPoints
             );
             return Results.Ok(games);
         });
-    
-        app.MapDelete("/games/{id}", (int id)=>{
+
+        group.MapDelete("/{id}", (int id)=>{
             games.RemoveAll(game => game.Id == id);
             return Results.Ok(games);
         });
 
-        return app;
+        return group;
     }
 }
