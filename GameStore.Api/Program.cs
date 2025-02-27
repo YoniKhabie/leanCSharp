@@ -13,6 +13,8 @@ builder.Services.AddScoped<GameStoreContext>();
 var app = builder.Build();
 
 app.MapGameEndpoints();
+app.MapGenresEndpoints();
+
 
 await app.MigrateDbAsync();
 
