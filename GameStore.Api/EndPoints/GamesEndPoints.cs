@@ -3,6 +3,7 @@
 using GameStore.Api.Data;
 using GameStore.Api.Dtos;
 using GameStore.Api.Entities;
+using GameStore.Api.Mapping;
 
 namespace GameStore.Api.EndPoints;
 
@@ -35,6 +36,7 @@ public static class GamesEndPoints
         });
 
         group.MapPost("", (CreateGameDto newGame, GameStoreContext dbContext) =>{
+            //old approach
             // GameDto game = new(
             //     games.Count+1,
             //     newGame.Name,
@@ -43,23 +45,36 @@ public static class GamesEndPoints
             //     newGame.ReleaseDate);
             // games.Add(game);
              
-            Game game = new(){
-                Name = newGame.Name,
-                Genre = dbContext.Genres.Find(newGame.GenreId),
-                GenreId = newGame.GenreId,
-                Price = newGame.Price,
-                ReleasDate = newGame.ReleaseDate
-            };
 
+            //new approach
+            // Game game = new(){
+            //     Name = newGame.Name,
+            //     Genre = dbContext.Genres.Find(newGame.GenreId),
+            //     GenreId = newGame.GenreId,
+            //     Price = newGame.Price,
+            //     ReleasDate = newGame.ReleaseDate
+            // };
+
+            // GameDto gameDto = new(
+            //     game.Id,
+            //     game.Name,
+            //     game.Genre!.Name,
+            //     game.Price,
+            //     game.ReleasDate
+            // );
+
+
+            // optimized new approach
+            Game game = newGame.ToEntity();
+            game.Genre = dbContext.Genres.Find(newGame.GenreId);
             dbContext.Games.Add(game);
-            dbContext.SaveChanges();
-            GameDto gameDto = new(
-                game.Id,
-                game.Name,
-                game.Genre!.Name,
-                game.Price,
-                game.ReleasDate
-            );
+            dbContext.SaveChanges(); // ID is generated here
+            Console.WriteLine(game.Id);
+            GameDto gameDto = game.ToDto();
+            Console.WriteLine(gameDto.Id);
+
+
+
             return Results.Ok(gameDto);
         });
 
