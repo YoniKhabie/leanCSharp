@@ -2,10 +2,11 @@ using GameStore.Api.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Api.Data;
-
+// dotnet ef migrations add SeedGenres --output-dir Data/Migrations will create database from this class
 public class GameStoreContext(DbContextOptions<GameStoreContext> options): DbContext(options)
 {
-    public DbSet<Game> Games => Set<Game>();
+    // Dbset will be a table in our database
+    public DbSet<Game> Games => Set<Game>(); 
 
     public DbSet<Genre> Genres => Set<Genre>();
 
@@ -13,7 +14,7 @@ public class GameStoreContext(DbContextOptions<GameStoreContext> options): DbCon
     {
         // when migrartions start the function will be triggerd - OnModelCreating
 
-        // base.OnModelCreating(modelBuilder);
+        // adding dummies to the database
         modelBuilder.Entity<Genre>().HasData(
             new {Id = 1, Name= "Fighting"},
             new {Id = 2, Name= "Roleplaying"},
