@@ -8,4 +8,18 @@ public class GameStoreContext(DbContextOptions<GameStoreContext> options): DbCon
     public DbSet<Game> Game => Set<Game>();
 
     public DbSet<Genre> Genres => Set<Genre>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // when migrartions start the function will be triggerd - OnModelCreating
+
+        // base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Genre>().HasData(
+            new {Id = 1, Name= "Fighting"},
+            new {Id = 2, Name= "Roleplaying"},
+            new {Id = 3, Name= "Sports"},
+            new {Id = 4, Name= "Racing"},
+            new {Id = 5, Name= "Kids and Family"}
+        );
+    }
 }
