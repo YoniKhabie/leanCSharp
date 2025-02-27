@@ -14,11 +14,31 @@ public static class GameMapping
         };
     }
 
-    public static GameDto ToDto(this Game game){
-        return new GameDto(
+        public static Game ToEntity(this UpdateGameDto game, int id){
+        return new Game(){
+            Id = id,
+            Name = game.Name,
+            GenreId = game.GenreId,
+            Price = game.Price,
+            ReleasDate = game.ReleaseDate
+        };
+    }
+
+    public static GameSummaryDto ToGameSummaryDto(this Game game){
+        return new GameSummaryDto(
             game.Id,
             game.Name,
             game.Genre!.Name,
+            game.Price,
+            game.ReleasDate
+        );
+    }
+
+      public static GameDetailsDto ToGameDetailsDto(this Game game){
+        return new GameDetailsDto(
+            game.Id,
+            game.Name,
+            game.GenreId,
             game.Price,
             game.ReleasDate
         );
