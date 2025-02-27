@@ -20,7 +20,7 @@ namespace GameStore.Api.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
 
-            modelBuilder.Entity("GameStore.Api.Entities.Game", b =>
+            modelBuilder.Entity("GameStore.Api.Entities.Games", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace GameStore.Api.Data.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("Game");
+                    b.ToTable("Games");
                 });
 
             modelBuilder.Entity("GameStore.Api.Entities.Genre", b =>

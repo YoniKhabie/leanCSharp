@@ -25,7 +25,7 @@ namespace GameStore.Api.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Game",
+                name: "Games",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -48,7 +48,7 @@ namespace GameStore.Api.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Game_GenreId",
-                table: "Game",
+                table: "Games",
                 column: "GenreId");
         }
 
@@ -56,7 +56,7 @@ namespace GameStore.Api.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Game");
+                name: "Games");
 
             migrationBuilder.DropTable(
                 name: "Genres");
